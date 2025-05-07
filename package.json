@@ -1,0 +1,16 @@
+{
+  "name": "aps-quicksight-poc",
+  "version": "0.0.0",
+  "author": "Petr Broz <petr.broz@autodesk.com>",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@aps_sdk/model-derivative": "^1.1.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "node-fetch": "^3.3.2"
+  }
+}
