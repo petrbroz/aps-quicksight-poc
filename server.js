@@ -22,7 +22,8 @@ app.use(express.static(path.join(__dirname, "wwwroot")));
 
 app.get("/token", async (req, res) => {
     try {
-        const credentials = await getServiceAccountAccessToken(APS_CLIENT_ID, APS_CLIENT_SECRET, APS_SA_ID, APS_SA_KEY_ID, APS_SA_PRIVATE_KEY, ["data:read"]);
+        const decodedPrivateKey = Buffer.from(APS_SA_PRIVATE_KEY, "base64").toString("utf-8");
+        const credentials = await getServiceAccountAccessToken(APS_CLIENT_ID, APS_CLIENT_SECRET, APS_SA_ID, APS_SA_KEY_ID, decodedPrivateKey, ["data:read"]);
         res.json(credentials);
     } catch (err) {
         console.error("Error generating access token:", err);

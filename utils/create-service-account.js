@@ -32,7 +32,8 @@ try {
     console.log(`APS_SA_ID="${serviceAccountId}"`);
     console.log(`APS_SA_EMAIL="${email}"`);
     console.log(`APS_SA_KEY_ID="${kid}"`);
-    console.log(`APS_SA_PRIVATE_KEY="${privateKey}"`);
+    const encodedPrivateKey = Buffer.from(privateKey).toString("base64");
+    console.log(`APS_SA_PRIVATE_KEY="${encodedPrivateKey}"`);
 } catch (err) {
     console.error(err);
     process.exit(1);

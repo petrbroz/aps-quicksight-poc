@@ -24,7 +24,8 @@ if (!urn) {
 }
 
 try {
-    const credentials = await getServiceAccountAccessToken(APS_CLIENT_ID, APS_CLIENT_SECRET, APS_SA_ID, APS_SA_KEY_ID, APS_SA_PRIVATE_KEY, ["data:read"]);
+    const decodedPrivateKey = Buffer.from(APS_SA_PRIVATE_KEY, "base64").toString("utf-8");
+    const credentials = await getServiceAccountAccessToken(APS_CLIENT_ID, APS_CLIENT_SECRET, APS_SA_ID, APS_SA_KEY_ID, decodedPrivateKey, ["data:read"]);
     const properties = await getRevitProperties(urn, credentials.access_token);
     process.stdout.write(JSON.stringify(properties, null, 2));
 } catch (err) {
