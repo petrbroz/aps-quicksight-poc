@@ -38,3 +38,12 @@ export function filterByRevitCategory(viewer, category) {
     viewer.isolate(ids);
     viewer.fitToView(ids);
 }
+
+export function filterByRevitProperty(viewer, propertyName, propertyValue) {
+    viewer.search(`"${propertyValue}"`, (ids) => {
+        viewer.isolate(ids);
+        viewer.fitToView(ids);
+    }, (err) => {
+        console.error("Error searching for property:", err);
+    }, [propertyName]);
+}

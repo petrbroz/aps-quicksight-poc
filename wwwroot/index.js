@@ -1,4 +1,4 @@
-import { initializeViewer, filterByRevitCategory } from "./viewer.js";
+import { initializeViewer, filterByRevitCategory, filterByRevitProperty } from "./viewer.js";
 import { embedDashboard } from "./dashboard.js";
 
 const params = new URLSearchParams(window.location.search);
@@ -13,18 +13,27 @@ const generateAccessToken = async () => {
 
 const generateEmbedUrl = async () => {
     const response = await fetch("/embed-url");
-    if (!response.ok) throw new Error(`Could not generate embed URL: ${response.statusText}`);
+    if (!response.ok) throw new Error(`Could not generate embed URL: ${response.statusText}. Please try again.`);
     const json = await response.json();
     return json.EmbedUrl;
 };
 
-const viewer = await initializeViewer("#viewer", urn, generateAccessToken);
-const dashboard = await embedDashboard("#dashboard", generateEmbedUrl, (ev) => {
-    for (const changedParam of ev.message.changedParameters) {
-        switch (changedParam.Name) {
+try {
+    const viewer = await initializeViewer("#viewer", urn, generateAccessToken);
+    const embedUrl = await generateEmbedUrl();
+    await embedDashboard("#dashboard", embedUrl, (dimension, value) => {
+        switch (dimension) {
             case "category":
-                filterByRevitCategory(viewer, changedParam.Values[0]);
+                filterByRevitCategory(viewer, value);
+                break;
+            case "level":
+                filterByRevitProperty(viewer, "Level", value);
+                break;
+            case "structural_material":
+                filterByRevitProperty(viewer, "Structural Material", value);
                 break;
         }
-    }
-});
+    });
+} catch (err) {
+    alert(err);
+}
